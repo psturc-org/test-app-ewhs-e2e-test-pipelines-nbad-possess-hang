@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: test-component--mpma
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: test-component--mpma
+    app.kubernetes.io/part-of: test-app-ewhs
+  name: test-component--mpma
+  namespace: e2e-test-pipelines-nbad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: test-component--mpma
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: test-component--mpma
+    spec:
+      containers:
+      - image: quay.io/psturc/test-images:b71194ec57be4a9a9141864202cc3ca4
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 8081
+        resources: {}
+status: {}
